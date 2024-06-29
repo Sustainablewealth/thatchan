@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<! –– Rohith Thatchan ––>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -28,11 +27,10 @@
 <body>
     <div class="container">
         <h1>OCBC Impact Calculator</h1>
-            <center><h4>GCFS Sustainability</h4></center>
         <form id="impactForm">
             <div class="input-group">
                 <div class="input-group-container">
-                    <label for="participantsSlider">👨‍👩‍👧‍👦 People engaged to create a reusable bag</label>
+                    <label for="participantsSlider">People reached to create a reusable bag</label>
                     <input type="range" id="participantsSlider" name="participantsSlider" min="0" max="5000" value="0" oninput="updateSliderValue('participantsSlider', 'participantsTooltip', 'participantsValue')" onmouseover="showTooltip('participantsTooltip')" onmouseout="hideTooltip('participantsTooltip')">
                     <span class="tooltip" id="participantsTooltip">0</span>
                 </div>
@@ -40,7 +38,7 @@
             </div>
             <div class="input-group">
                 <div class="input-group-container">
-                    <label for="bagsAvoidedSlider">♻️ Plastic bags avoided by a person each year</label>
+                    <label for="bagsAvoidedSlider">Plastic bags avoided per person each year</label>
                     <input type="range" id="bagsAvoidedSlider" name="bagsAvoidedSlider" min="0" max="300" value="125" oninput="updateSliderValue('bagsAvoidedSlider', 'bagsAvoidedTooltip', 'bagsAvoidedValue')" onmouseover="showTooltip('bagsAvoidedTooltip')" onmouseout="hideTooltip('bagsAvoidedTooltip')">
                     <span class="tooltip" id="bagsAvoidedTooltip">125</span>
                 </div>
@@ -74,7 +72,11 @@
             if (isNaN(peopleReached) || isNaN(bagsAvoidedPerPerson)) return alert("Please enter valid numbers for participants and bags avoided per person."), void 0;
             var plasticBagsReplaced = peopleReached * bagsAvoidedPerPerson, co2PerPlasticBag = 1.58, totalCO2eSaved = plasticBagsReplaced * co2PerPlasticBag, co2PerTree = 21.77, treesNeeded = totalCO2eSaved / co2PerTree,
                 landfillPerBag = .01, landfillSaved = peopleReached * landfillPerBag, waterPerPlasticBag = .9, waterSaved = plasticBagsReplaced * waterPerPlasticBag, treeImageSrc = treesNeeded > 1e3 ? "https://static.vecteezy.com/system/resources/previews/024/544/279/original/trees-on-transparent-background-for-illustration-free-png.png" : treesNeeded > 500 ? "https://static.vecteezy.com/system/resources/previews/024/544/279/original/trees-on-transparent-background-for-illustration-free-png.png" : "https://static.vecteezy.com/system/resources/previews/024/544/279/original/trees-on-transparent-background-for-illustration-free-png.png";
-            document.getElementById("result").innerHTML = '<div class="result-item"><img src="https://png.pngtree.com/png-vector/20240129/ourmid/pngtree-3d-illustration-of-air-pollution-png-image_11561049.png" alt="CO2e Icon"><p>Avoided <span style="color:#E60028; font-weight: bold;">'.concat(totalCO2eSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' kg of CO2e</span>, equivalent to traveling 566 times between Changi Airport and Tuas by car in Singapore.</p></div><div class="result-item"><img src="').concat(treeImageSrc, '" alt="Tree Icon"><p>Equivalent to <span style="color:#32CD32; font-weight: bold;">').concat(treesNeeded.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' trees</span> needed to absorb the same amount of CO2 in a year.</p></div><div class="result-item"><img src="https://cdn-icons-png.freepik.com/256/8487/8487843.png?semt=ais_hybrid" alt="Water Icon"><p>Saved <span style="color:#1E90FF; font-weight: bold;">').concat(waterSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' liters</span> of water.</p></div>');
+
+            var co2EmissionsPerRoundTrip = 92 * 0.145; // 92 km round trip * 0.147 kg CO2/km
+            var equivalentTrips = totalCO2eSaved / co2EmissionsPerRoundTrip;
+
+            document.getElementById("result").innerHTML = '<div class="result-item"><img src="https://png.pngtree.com/png-vector/20240129/ourmid/pngtree-3d-illustration-of-air-pollution-png-image_11561049.png" alt="CO2e Icon"><p>Avoided <span style="color:#E60028; font-weight: bold;">'.concat(totalCO2eSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' kg of CO2e</span>, equivalent to traveling ').concat(equivalentTrips.toFixed(0), ' times between Changi Airport and Tuas by car in Singapore.</p></div><div class="result-item"><img src="').concat(treeImageSrc, '" alt="Tree Icon"><p>Equivalent to <span style="color:#32CD32; font-weight: bold;">').concat(treesNeeded.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' trees</span> needed to absorb the same amount of CO2 in a year.</p></div><div class="result-item"><img src="https://cdn-icons-png.freepik.com/256/8487/8487843.png?semt=ais_hybrid" alt="Water Icon"><p>Saved <span style="color:#1E90FF; font-weight: bold;">').concat(waterSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' liters</span> of water.</p></div>');
 
             // Display biome image
             var biomeImage = document.getElementById("biomeImage");
