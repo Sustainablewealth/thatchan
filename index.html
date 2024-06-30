@@ -23,16 +23,17 @@
         .result-item p{margin:0;font-size:16px}
         .assumption{font-size:12px;color:#666;margin-top:-30px;margin-bottom:20px}
         .biome-img{width:100%;height:auto;margin-top:20px;}
+        .assumptions-box{background-color:#f9f9f9;padding:10px;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,0.1);margin-top:20px;font-size:10px;color:#666;display:none;}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>OCBC Impact Calculator</h1>
-<center><h4>GCFS Sustainability</h4></center>
+        <center><h4>GCFS Sustainability</h4></center>
         <form id="impactForm">
             <div class="input-group">
                 <div class="input-group-container">
-                    <label for="participantsSlider">🏘️ People reached to create a reusable bag</label>
+                    <label for="participantsSlider">🏘️ Number of people needed to create a reusable bag</label>
                     <input type="range" id="participantsSlider" name="participantsSlider" min="0" max="5000" value="0" oninput="updateSliderValue('participantsSlider', 'participantsTooltip', 'participantsValue')" onmouseover="showTooltip('participantsTooltip')" onmouseout="hideTooltip('participantsTooltip')">
                     <span class="tooltip" id="participantsTooltip">0</span>
                 </div>
@@ -51,6 +52,9 @@
         </form>
         <div id="result"></div>
         <img id="biomeImage" class="biome-img" src="" alt="Biome Image" style="display:none;">
+        <div class="assumptions-box" id="assumptionsBox">
+            <p>Note: CO2 emissions for a typical ICE car is estimated to be 145 grams per kilometer; 1 single use plastic bag saves 1.58kg of CO2 emissions as per UK Environmental agency; 1 tree absorbs 21.77kg of CO2; each avoided plastic bag saves 0.9 liters of water; 1 reusable bag at regular use is estimated to replace the use of 125 single-use plastic bag per NUS.</p>
+        </div>
     </div>
     <script>
         function updateSliderValue(sliderId, tooltipId, displayId) {
@@ -75,10 +79,10 @@
             var plasticBagsReplaced = peopleReached * bagsAvoidedPerPerson, co2PerPlasticBag = 1.58, totalCO2eSaved = plasticBagsReplaced * co2PerPlasticBag, co2PerTree = 21.77, treesNeeded = totalCO2eSaved / co2PerTree,
                 landfillPerBag = .01, landfillSaved = peopleReached * landfillPerBag, waterPerPlasticBag = .9, waterSaved = plasticBagsReplaced * waterPerPlasticBag, treeImageSrc = treesNeeded > 1e3 ? "https://static.vecteezy.com/system/resources/previews/024/544/279/original/trees-on-transparent-background-for-illustration-free-png.png" : treesNeeded > 500 ? "https://static.vecteezy.com/system/resources/previews/024/544/279/original/trees-on-transparent-background-for-illustration-free-png.png" : "https://static.vecteezy.com/system/resources/previews/024/544/279/original/trees-on-transparent-background-for-illustration-free-png.png";
 
-            var co2EmissionsPerRoundTrip = 92 * 0.145; // 92 km round trip * 0.147 kg CO2/km
+            var co2EmissionsPerRoundTrip = 92 * 0.145; // 92 km round trip * 0.145 kg CO2/km
             var equivalentTrips = totalCO2eSaved / co2EmissionsPerRoundTrip;
 
-            document.getElementById("result").innerHTML = '<div class="result-item"><img src="https://png.pngtree.com/png-vector/20240129/ourmid/pngtree-3d-illustration-of-air-pollution-png-image_11561049.png" alt="CO2e Icon"><p>Avoided <span style="color:#E60028; font-weight: bold;">'.concat(totalCO2eSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' kg of CO2e</span>, equivalent to traveling ').concat(equivalentTrips.toFixed(0), ' times between Changi Airport & Tuas by car in Singapore.</p></div><div class="result-item"><img src="').concat(treeImageSrc, '" alt="Tree Icon"><p>Equivalent to <span style="color:#32CD32; font-weight: bold;">').concat(treesNeeded.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' trees</span> needed to absorb the same amount of CO2 in a year.</p></div><div class="result-item"><img src="https://cdn-icons-png.freepik.com/256/8487/8487843.png?semt=ais_hybrid" alt="Water Icon"><p>Saved <span style="color:#1E90FF; font-weight: bold;">').concat(waterSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","), ' liters</span> of water.</p></div>');
+            document.getElementById("result").innerHTML = '<div class="result-item"><img src="https://media.istockphoto.com/id/928454146/vector/garage-dump-isolated.jpg?s=612x612&w=0&k=20&c=_qmvZqsGfmZGwxhjSYr0KqOliLc6ZMWkrVxselbgqAk=" alt="Plastic Bags Icon"><p><span style="color:	#C3732A; font-weight: bold;">' + plasticBagsReplaced.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' plastic bags</span> prevented from entering the landfill each year.</p></div><div class="result-item"><img src="https://png.pngtree.com/png-vector/20240129/ourmid/pngtree-3d-illustration-of-air-pollution-png-image_11561049.png" alt="CO2e Icon"><p>Avoided <span style="color:#E60028; font-weight: bold;">' + totalCO2eSaved.toFixed(2).replace(/\B(?=(\3})+(?!\d))/g, ",") + ' kg of CO2e</span>, equivalent to traveling ' + equivalentTrips.toFixed(0) + ' times between Changi Airport and Tuas by car in Singapore.</p></div><div class="result-item"><img src="' + treeImageSrc + '" alt="Tree Icon"><p>Equivalent to <span style="color:#32CD32; font-weight: bold;">' + treesNeeded.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' trees</span> needed to absorb the same amount of CO2 in a year.</p></div><div class="result-item"><img src="https://cdn-icons-png.freepik.com/256/8487/8487843.png?semt=ais_hybrid" alt="Water Icon"><p>Saved <span style="color:#1E90FF; font-weight: bold;">' + waterSaved.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' liters</span> of water.</p></div>';
 
             // Display biome image
             var biomeImage = document.getElementById("biomeImage");
@@ -92,6 +96,9 @@
             }
             biomeImage.src = impactLevel;
             biomeImage.style.display = 'block';
+
+            // Display assumptions box
+            document.getElementById("assumptionsBox").style.display = 'block';
         }
     </script>
 </body>
